@@ -160,8 +160,13 @@ public class MutatorTest {
   }
 
   @Test
+  public void providesPitDefaultsGroup() {
+    assertGroupHasSize("PIT_DEFAULTS", 12);
+  }
+  
+  @Test
   public void providesDefaultsGroup() {
-    assertGroupHasSize("DEFAULTS", 12);
+    assertGroupHasSize("DEFAULTS", 6);
   }
 
   @Test
@@ -262,7 +267,7 @@ public class MutatorTest {
 
   @Test
   public void shouldNotCreateDuplicatesWhenRequestedViaGroup() {
-    assertThat(parseStrings("MATH", "DEFAULTS")).hasSameSizeAs(
+    assertThat(parseStrings("AOD", "DEFAULTS")).hasSameSizeAs(
         parseStrings("DEFAULTS"));
   }
 

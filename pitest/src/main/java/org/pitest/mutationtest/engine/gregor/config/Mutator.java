@@ -24,13 +24,17 @@ import org.pitest.mutationtest.engine.gregor.mutators.IncrementsMutator;
 import org.pitest.mutationtest.engine.gregor.mutators.InvertNegsMutator;
 import org.pitest.mutationtest.engine.gregor.mutators.MathMutator;
 import org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator;
+import org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator;
+//import org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator;
 import org.pitest.mutationtest.engine.gregor.mutators.ReturnValsMutator;
 import org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator;
-import org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator;
-import org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator;
-import org.pitest.mutationtest.engine.gregor.mutators.returns.EmptyObjectReturnValsMutator;
-import org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator;
-import org.pitest.mutationtest.engine.gregor.mutators.returns.PrimitiveReturnsMutator;
+//import org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator;
+//import org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator;
+//import org.pitest.mutationtest.engine.gregor.mutators.returns.EmptyObjectReturnValsMutator;
+//import org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator;
+//import org.pitest.mutationtest.engine.gregor.mutators.returns.PrimitiveReturnsMutator;
+import org.pitest.mutationtest.engine.gregor.mutators.rv.AOD1Mutator;
+import org.pitest.mutationtest.engine.gregor.mutators.rv.AOD2Mutator;
 import org.pitest.util.IsolationUtils;
 import org.pitest.util.ServiceLoader;
 
@@ -90,25 +94,35 @@ public final class Mutator {
   }
 
   /**
-   * Proposed new defaults - replaced the RETURN_VALS mutator with the new more stable set
+   * New Code Ri
+   * Proposed new defaults - based on selective mutation analysis (Ayaan et al.)
    */
   public static Collection<MethodMutatorFactory> newDefaults() {
-    return combine(group(InvertNegsMutator.INVERT_NEGS,
-        MathMutator.MATH,
-        VoidMethodCallMutator.VOID_METHOD_CALLS,
-        NegateConditionalsMutator.NEGATE_CONDITIONALS,
-        ConditionalsBoundaryMutator.CONDITIONALS_BOUNDARY,
-        IncrementsMutator.INCREMENTS), betterReturns());
+    return combine(group(AOD1Mutator.AOD1,
+        AOD2Mutator.AOD2),
+        (Collection<MethodMutatorFactory>) RemoveConditionalMutator.factory());
   }
-
-
-  private static Collection<MethodMutatorFactory> betterReturns() {
-    return group(BooleanTrueReturnValsMutator.TRUE_RETURNS,
-        BooleanFalseReturnValsMutator.FALSE_RETURNS,
-        PrimitiveReturnsMutator.PRIMITIVE_RETURNS,
-        EmptyObjectReturnValsMutator.EMPTY_RETURNS,
-        NullReturnValsMutator.NULL_RETURNS);
-  }
+  
+  /**
+   * Previous code
+   * Proposed new defaults - replaced the RETURN_VALS mutator with the new more stable set
+   */
+//  public static Collection<MethodMutatorFactory> newDefaults() {
+//    return combine(group(InvertNegsMutator.INVERT_NEGS,
+//        MathMutator.MATH,
+//        VoidMethodCallMutator.VOID_METHOD_CALLS,
+//        NegateConditionalsMutator.NEGATE_CONDITIONALS,
+//        ConditionalsBoundaryMutator.CONDITIONALS_BOUNDARY,
+//        IncrementsMutator.INCREMENTS), betterReturns());
+//  }
+//  
+//  private static Collection<MethodMutatorFactory> betterReturns() {
+//    return group(BooleanTrueReturnValsMutator.TRUE_RETURNS,
+//        BooleanFalseReturnValsMutator.FALSE_RETURNS,
+//        PrimitiveReturnsMutator.PRIMITIVE_RETURNS,
+//        EmptyObjectReturnValsMutator.EMPTY_RETURNS,
+//        NullReturnValsMutator.NULL_RETURNS);
+//  }
 
   private static Collection<MethodMutatorFactory> group(
       final MethodMutatorFactory... ms) {

@@ -17,7 +17,7 @@ public class StandardMutatorGroups implements MutatorGroup {
                 "CONDITIONALS_BOUNDARY",
                 "INCREMENTS"));
 
-        mutators.put("DEFAULTS", gather(mutators,"INVERT_NEGS",
+        mutators.put("PIT_DEFAULTS", gather(mutators,"INVERT_NEGS",
                 "MATH",
                 "VOID_METHOD_CALLS",
                 "REMOVE_CONDITIONALS_ORDER_ELSE",
@@ -25,7 +25,10 @@ public class StandardMutatorGroups implements MutatorGroup {
                 "CONDITIONALS_BOUNDARY",
                 "INCREMENTS", "RETURNS"));
 
-        mutators.put("STRONGER", gather(mutators,"DEFAULTS",
+        mutators.put("DEFAULTS", gather(mutators,"REMOVE_CONDITIONALS",
+                "AOD"));
+
+        mutators.put("STRONGER", gather(mutators,"PIT_DEFAULTS",
                 "EXPERIMENTAL_SWITCH",
                 "REMOVE_CONDITIONALS_ORDER_IF",
                 "REMOVE_CONDITIONALS_EQUAL_IF"));
